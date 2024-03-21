@@ -23,11 +23,11 @@ export default function PostComment({ postId }) {
     const [hover, setHover] = useState(false);   
 
     useEffect(() => {
-        axios.get("http://localhost:3000/comment/" + postId)
+        axios.get(`${process.env.REACT_APP_API_URL}/comment/${postId}`)
             .then((res) => setCommentData(res.data.comments))
             .catch(console.error);
 
-        axios.get("http://localhost:3000/post/" + postId)
+        axios.get(`${process.env.REACT_APP_API_URL}/post/${postId}`)
             .then((res) => setlikeData(res.data.posts))
             .catch(console.error);
 
@@ -49,7 +49,7 @@ export default function PostComment({ postId }) {
 
             const configuration = {
                 method: "post",
-                url: "http://localhost:3000/comment/" + postId,
+                url: `${process.env.REACT_APP_API_URL}/comment/${postId}`,
                 data: {
                     name,
                     postId,
@@ -60,7 +60,7 @@ export default function PostComment({ postId }) {
             e.preventDefault();
             axios(configuration)
                 .then((result) => {
-                    axios.get("http://localhost:3000/comment/" + postId)
+                    axios.get(`${process.env.REACT_APP_API_URL}/comment/${postId}`)
                         .then((res) => setCommentData(res.data.comments))
                         .catch(console.error);
                 })
@@ -79,7 +79,7 @@ export default function PostComment({ postId }) {
         } else {
             const configuration = {
                 method: "put",
-                url: "http://localhost:3000/likepost/" + postId,
+                url: `${process.env.REACT_APP_API_URL}/likepost/${postId}`,
                 data: {
                     name
                 },
@@ -88,7 +88,7 @@ export default function PostComment({ postId }) {
             e.preventDefault();
             axios(configuration)
                 .then((result) => {
-                    axios.get("http://localhost:3000/post/" + postId)
+                    axios.get(`${process.env.REACT_APP_API_URL}/post/${postId}`)
                         .then((res) => setlikeData(res.data.posts))
                         .catch(console.error);
                 })

@@ -44,7 +44,7 @@ export default function EditUser({ user }) {
 
             const configuration = {
                 method: "put",
-                url: "http://localhost:3000/users/" + name,
+                url: `${process.env.REACT_APP_API_URL}/users/${name}`,
                 data: data,
             };
 
@@ -62,7 +62,7 @@ export default function EditUser({ user }) {
         else {
             const configuration = {
                 method: "put",
-                url: "http://localhost:3000/users/" + name,
+                url: `${process.env.REACT_APP_API_URL}/users/${name}`,
                 data: data,
             };
 

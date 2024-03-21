@@ -11,7 +11,7 @@ import ShowMore from 'react-show-more-button/dist/module';
 export default function Feed() {
     const [data, setData] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3000/post")
+        axios.get(`${process.env.REACT_APP_API_URL}/post`)
             .then((res) => setData(res.data.posts.slice(0,10)))//loads 11 posts
             .catch(console.error);
     }, []);

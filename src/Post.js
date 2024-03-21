@@ -39,7 +39,7 @@ export default function Post() {
         }
         const configuration = {
             method: "post",
-            url: "http://localhost:3000/post",
+            url: `${process.env.REACT_APP_API_URL}/post`,
             data: data,
         };
 

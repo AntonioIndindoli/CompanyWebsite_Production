@@ -7,7 +7,7 @@ import ShowMore from 'react-show-more-button/dist/module';
 export default function UserList() {
     const [data, setData] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3000/users")
+        axios.get(`${process.env.REACT_APP_API_URL}/users`)
             .then((res) => setData(res.data.users))
             .catch(console.error);
     }, []);

@@ -17,7 +17,7 @@ export default function Login() {
         // set configurations
         const configuration = {
             method: "post",
-            url: "http://localhost:3000/signin",
+            url: `${process.env.REACT_APP_API_URL}/signin`,
             data: {
                 email,
                 password

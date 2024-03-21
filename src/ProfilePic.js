@@ -5,7 +5,7 @@ import placeholder from './placeholder.png';
 export default function ProfilePic({ userParam }) {
     const [data, setData] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3000/users/" + userParam)
+        axios.get(`${process.env.REACT_APP_API_URL}/users/${userParam}`)
             .then((res) => setData(res.data.user))
             .catch(console.error);
 

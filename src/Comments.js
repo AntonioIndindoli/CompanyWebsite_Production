@@ -6,7 +6,7 @@ import dateFormat from 'dateformat';
 export default function Comments({postId}) {
     const [commentData, setCommentData] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3000/comment/"+postId)
+        axios.get(`${process.env.REACT_APP_API_URL}/comment/${postId}`)
             .then((res) => setCommentData(res.data.comments))
             .catch(console.error);
     }, []);

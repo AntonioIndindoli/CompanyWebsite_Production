@@ -16,7 +16,7 @@ export default function Register() {
         // set configurations
         const configuration = {
             method: "post",
-            url: "http://localhost:3000/signup",
+            url: `${process.env.REACT_APP_API_URL}/signup`,
             data: {
                 name,
                 email,

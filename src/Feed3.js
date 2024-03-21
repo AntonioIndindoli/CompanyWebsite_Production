@@ -27,7 +27,7 @@ export default function Feed() {
    async function getPosts() {
     const configuration = {
         method: "get",
-        url: "http://localhost:3000/post",
+        url: `${process.env.REACT_APP_API_URL}/post`,
     };
 
     axios(configuration)
@@ -48,7 +48,7 @@ export default function Feed() {
  
  // This method will delete a Post
  async function deletePost(id) {
-   await axios.get('http://localhost:3000/${id}', {
+   await axios.get(`${process.env.REACT_APP_API_URL}/${id}`, {
      method: "DELETE"
    });
  

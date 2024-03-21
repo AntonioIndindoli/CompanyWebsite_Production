@@ -18,17 +18,17 @@ export default function Profile() {
     const currentUser = cookies.get("USER");
     
     const { user } = useParams();
-    alert("sex");
+    //alert("sex");
     const [data, setData] = useState([]);
     const [showWarning, setWarning] = useState(false);
     const [showForm, setForm] = useState(false);
     const [userData, setUserData] = useState([]);
     useEffect(() => {
-        axios.get("http://localhost:3000/posts/" + user)
+        axios.get(`${process.env.REACT_APP_API_URL}/posts/${user}`)
             .then((res) => setData(res.data.posts))
             .catch(console.error);
 
-            axios.get("http://localhost:3000/users/" + user)
+            axios.get(`${process.env.REACT_APP_API_URL}/users/${user}`)
             .then((res) => setUserData(res.data.user))
             .catch(console.error);
     }, []);
