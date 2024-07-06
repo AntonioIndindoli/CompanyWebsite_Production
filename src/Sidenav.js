@@ -6,7 +6,7 @@ import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 const cookies = new Cookies();
 
 export default function Sidenav() {
-    const token = cookies.get("TOKEN");
+    const token = localStorage.getItem("TOKEN");
     let location = useLocation();
     const navigate = useNavigate();
 

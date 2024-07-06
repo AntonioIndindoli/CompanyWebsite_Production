@@ -1,18 +1,18 @@
 import Sidenav from "./Sidenav";
 import React from "react";
 import Profile from "./Profile";
-import SidenavRight from "./SidenavRight";
+import UserList from "./UserList";
 import { Col, Row, Container, Button } from "react-bootstrap";
 import Header from "./components/Header";
 
-export default function AuthComponent() {
+export default function Members() {
   return (
     <div>
       <Header />
       <div className="feed-container-row">
         <Col>
           <Col className="feed-container">
-            <Profile />
+            <UserList />
           </Col>
         </Col>
       </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Col, Row, Container, Form, Button } from "react-bootstrap";
 import axios from "axios";
 import post from './post.png';
@@ -8,11 +8,22 @@ import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 export default function Post() {
-    var name = cookies.get("USER");
+    var name = localStorage.getItem("USER");
     const [body, setText] = useState("");
+    const [threads, setThreads] = useState([]); // Store threads
+    const [selectedThread, setSelectedThread] = useState(""); // Selected thread
     const [showForm, setForm] = useState(false);
     const [showWarning, setWarning] = useState(false);
     const [file, setFile] = useState();
+
+    useEffect(() => {
+        // Fetch threads when component mounts
+        axios.get(`${process.env.REACT_APP_API_URL}/threads`)
+            .then((response) => {
+                setThreads(response.data.threads);
+            })
+            .catch((error) => console.error("There was an error fetching the threads:", error));
+    }, []);
 
     const fileSelected = event => {
         const file = event.target.files[0]
@@ -30,10 +41,17 @@ export default function Post() {
     }
 
     const handleSubmit = (e) => {
-        // set configurations
+        e.preventDefault(); // Prevent the form from refreshing the whole page
+
+        if (!selectedThread) {
+            alert("Please select a thread.");
+            return;
+        }
+
         const data = new FormData();
         data.append("name", name);
         data.append("body", body);
+        data.append("thread", selectedThread); // Include the selected thread
         if (file) {
             data.append("file", file);
         }
@@ -43,17 +61,14 @@ export default function Post() {
             data: data,
         };
 
-        // prevent the form from refreshing the whole page
-        e.preventDefault();
         axios(configuration)
             .then((result) => {
                 window.location.reload(false);
             })
             .catch((error) => {
-                error = new Error();
+                console.error("Error posting:", error);
                 alert("Error");
             });
-
     }
 
     const hiddenFileInput = React.useRef(null);
@@ -61,15 +76,12 @@ export default function Post() {
         hiddenFileInput.current.click();
     };
 
-//<input className='file-upload' onChange={fileSelected} accept="image/*" type="file"></input>
     return (
         <>
             <div className="group-feed">
                 <div className="group-box-post">
                     {showForm &&
-                        <Form className='form-struct-post' onSubmit={(e) => handleSubmit(e)}>
-
-                            {/* text */}
+                        <Form className='form-struct-post' onSubmit={handleSubmit}>
                             <Form.Group controlId="formBasictext">
                                 <textarea
                                     className='form-post-input-label'
@@ -79,6 +91,19 @@ export default function Post() {
                                     onChange={(e) => setText(e.target.value)}
                                     placeholder="Enter text"
                                 />
+                            </Form.Group>
+
+                            {/* Thread selection dropdown */}
+                            <Form.Group>
+                                <Form.Label>Select Thread</Form.Label>
+                                <Form.Control as="select" custom onChange={(e) => setSelectedThread(e.target.value)}>
+                                    <option value="">Choose...</option>
+                                    {threads.map((thread) => (
+                                        <option key={thread._id} value={thread._id}>
+                                            {thread.name}
+                                        </option>
+                                    ))}
+                                </Form.Control>
                             </Form.Group>
 
                             {/* submit button */}
@@ -97,9 +122,7 @@ export default function Post() {
                                     className='submit-button'
                                     variant="primary"
                                     type="submit"
-                                    onClick={(e) => handleSubmit(e)}
                                 >Post</Button>
-
                             </Row>
                         </Form>
                     }
@@ -108,9 +131,8 @@ export default function Post() {
                             <Button
                                 className='post-button'
                                 variant="primary"
-                                onClick={(e) => handleSubmitShow(e)}
-                            ><img className="post-logo" src={post} alt="post" />Make a Post</Button>
-
+                                onClick={handleSubmitShow}
+                            ><img className='post-logo' src={post}></img>Make a Post</Button>
                         </div>
                     }
                     {showWarning && <p className='text-warning'>You must be signed in to post</p>}

@@ -8,8 +8,14 @@ const postSchema = new mongoose.Schema({
    body: {
     type: String
   }, 
-  imageName: {
-    type: String
+  thread: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Thread', // Assuming there's a Thread model
+  },
+  image: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Image',
+    required: false
   },
   likes: {
     type: [String]

@@ -7,7 +7,7 @@ const cookies = new Cookies();
 export default function ProtectedRoutes({ component: children}) {
 
     let location = useLocation();
-    const token = cookies.get("TOKEN");
+    const token = localStorage.getItem("TOKEN");
 
     // returns route if there is a valid token set in the cookie
     if (!token) {
@@ -20,7 +20,7 @@ export default function ProtectedRoutes({ component: children}) {
 
   const ProtectedRoutes = ({ children }) => {
     let location = useLocation();
-    const token = cookies.get("TOKEN");
+    const token = localStorage.getItem("TOKEN");
 
     // returns route if there is a valid token set in the cookie
     if (!token) {

@@ -5,6 +5,9 @@ if (process.env.NODE_ENV != "production") {
 
 // Import dependencies
 const Post = require("./models/post");
+const Image = require("./models/image"); 
+const User = require("./models/user");
+const { authenticate, isAdmin } = require('./middleware/authenticate');
 const { uploadFile, deleteFile, getObjectSignedUrl } = require('./s3.js');
 const express = require("express");
 const cors = require("cors");
@@ -12,6 +15,7 @@ const connectToDb = require("./config/connectToDb");
 const postsController = require("./controllers/postsController");
 const commentController = require("./controllers/commentController");
 const userController = require('./controllers/userController');
+const threadController = require('./controllers/threadController');
 const multer  = require('multer');
 const sharp = require("sharp");
 const crypto = require("crypto");
@@ -43,53 +47,84 @@ app.put("/comment/:id", commentController.updateComment);
 app.delete("/comment/:id", commentController.deleteComment);
 app.get("/users/:user", userController.fetchUser);
 app.get("/users", userController.fetchUsers);
+
+app.post("/createThread", threadController.createThreads);
+app.get("/threads", threadController.fetchThreads);
+app.get('/thread/:id', threadController.fetchThreadById);
+//todo, add update and delete threads for renaming and deleting
+
 app.put("/users/:user", upload.single('file'), userController.updateUser);
 app.get("/post", postsController.fetchPosts);
 app.get("/posts/:user", postsController.fetchPostbyUser);
+app.get('/posts/thread/:thread', postsController.fetchPostbyThread);
 app.get("/post/:id", postsController.fetchPost);
 app.put("/post/:id", postsController.updatePost);
 app.put("/likepost/:id", postsController.likePost);
 app.delete("/post/:id", postsController.deletePost);
 app.post('/signup', userController.signup);
 app.post('/signin', userController.signin);
-app.post("/post", upload.single('file'),  async (req, res) => {
-  // Get the sent in data off request body
-  let { name, body } = req.body;
+app.post("/post", upload.single('file'), async (req, res) => {
+  let { name, body, thread } = req.body;
   const date = Date.now();
-  var imageName = generateFileName();
-  let likes = new Array (name);
-  var post;
+  let imageName = generateFileName();
+  let post, imageData;
 
-  if(req.file){
-      const fileBuffer = await sharp(req.file.buffer)
-    .resize({ width: 480 })
-    .toBuffer()
+  if (req.file) {
+    const fileBuffer = await sharp(req.file.buffer)
+      .resize({ width: 1080 })
+      .jpeg({ quality: 80 }) 
+      .toBuffer();
 
-  await uploadFile(fileBuffer, imageName, req.file.mimetype)
+    // Create an Image document and save it to MongoDB
+    const newImage = await Image.create({
+      name: imageName,
+      data: fileBuffer,
+      contentType: req.file.mimetype,
+      date
+    });
 
-  // Create a Post with it
+    // Use the saved Image document's ID as a reference in your Post document
+    imageData = newImage._id;
+  } else {
+    imageName = "noImage";
+  }
+
   post = await Post.create({
     name,
     body,
-    imageName,
-    likes,
+    thread,
+    image: imageData, // Store image ID/reference instead of imageName
+    likes: new Array(name),
     date,
   });
-  }
-  else{
-    imageName = "noImage";
- post = await Post.create({
-    name,
-    body,
-    imageName,
-    likes,
-    date,
-  });
-  }
-  // respond with the new Post
+
   res.json({ post });
 });
-
+app.get('/images/:imageId', async (req, res) => {
+  try {
+    const image = await Image.findById(req.params.imageId);
+    if (!image) {
+      return res.status(404).send();
+    }
+    res.set('Content-Type', image.contentType);
+    res.send(image.data);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+app.put('/admin/verify-user/:userId', authenticate, isAdmin, (req, res) => {
+  const { userId } = req.params;
+  User.findByIdAndUpdate(userId, { isVerified: true }, { new: true })
+      .then(updatedUser => {
+          if (!updatedUser) {
+              return res.status(404).json({ message: 'User not found' });
+          }
+          res.json({ message: 'User verified successfully', user: updatedUser });
+      })
+      .catch(err => {
+          res.status(500).json({ message: 'Error verifying user', error: err });
+      });
+});
 
 // Start our server
 app.listen(process.env.PORT);

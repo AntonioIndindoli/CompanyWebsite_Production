@@ -9,7 +9,7 @@ export default function ProfilePic({ userParam }) {
             .then((res) => setData(res.data.user))
             .catch(console.error);
 
-    }, []);
+    }, [userParam]);
 
     if (data.length) {
         const images = data.map(({ img }) => img)

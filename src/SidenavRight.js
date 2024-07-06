@@ -4,8 +4,8 @@ import { Col, Row, Form, Button } from "react-bootstrap";
 const cookies = new Cookies();
 
 export default function Sidenav() {
-    const token = cookies.get("TOKEN");
-    const user = cookies.get("USER");
+    const token = localStorage.getItem("TOKEN");
+    const user = localStorage.getItem("USER");
     const userProfile = "/myProfile/"+user;
 
     return (

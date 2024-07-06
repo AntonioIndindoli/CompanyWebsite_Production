@@ -13,6 +13,8 @@ const Schema = mongoose.Schema; let userSchema = new Schema({
         type: String,
         required: true
     },
+    isVerified: { type: Boolean, default: false },
+    isAdmin: { type: Boolean, default: false },
     bio: {
         type: String
     },

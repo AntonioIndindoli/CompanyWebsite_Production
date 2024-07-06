@@ -1,20 +1,14 @@
-import React from 'react';
+import React from "react";
 import Cookies from "universal-cookie";
 const cookies = new Cookies();
 
 export default function Logout() {
+  // set the cookie
+  localStorage.removeItem("TOKEN");
+  localStorage.removeItem("USER");
+  cookies.remove("ISADMIN", true);
 
-    // set the cookie
-    cookies.remove("TOKEN", true);
-    cookies.remove("USER", true);
-    window.location.href = "/";
+  window.location.href = "/";
 
-    return (
-        <>
-        </>
-    )
-
+  return <></>;
 }
-
-
-

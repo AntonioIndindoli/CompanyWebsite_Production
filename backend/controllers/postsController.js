@@ -9,12 +9,13 @@ const upload = multer({ dest: 'uploads/' })
 const fetchPosts = async (req, res) => {
   // Find the posts
   const posts = await Post.find().sort({ date: -1 });
-
+/*
   for (let post of posts) {
     if (post.imageName != 'noImage')
       post.imageName = await getObjectSignedUrl(post.imageName)
+    
   }
-
+*/
   // Respond with them
   res.json({ posts });
 };
@@ -23,15 +24,27 @@ const fetchPostbyUser = async (req, res) => {
   // Find the posts
   var userurl = req.params.user;
   const posts = await Post.find({ "name": userurl }).sort({ date: -1 });
-
+/*
   for (let post of posts) {
     if (post.imageName != 'noImage')
       post.imageName = await getObjectSignedUrl(post.imageName)
   }
-
+  */
   // Respond with them
   res.json({ posts });
 };
+
+const fetchPostbyThread = async (req, res) => {
+  // Assuming 'thread' is the thread identifier (name or ID) passed in the URL
+  const threadIdentifier = req.params.thread;
+
+  // Update your query to filter posts by the 'thread' field
+  const posts = await Post.find({ thread: threadIdentifier }).sort({ date: -1 });
+
+  res.json({ posts });
+};
+
+
 
 const fetchPost = async (req, res) => {
   // Get id off the url
@@ -40,10 +53,10 @@ const fetchPost = async (req, res) => {
   // Find the Post using that id
   const posts = await Post.findOne({ _id: PostId });
   console.log(posts)
-
+/*
   if (posts.imageName != 'noImage')
   posts.imageName = await getObjectSignedUrl(posts.imageName)
-
+  */
   // Respond with the Post
   res.json({ posts });
 };
@@ -96,6 +109,7 @@ module.exports = {
   fetchPost,
   likePost,
   fetchPostbyUser,
+  fetchPostbyThread,
   updatePost,
   deletePost,
 };

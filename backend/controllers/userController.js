@@ -1,4 +1,3 @@
-const User = require("../models/user");
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 const { createJWT, } = require("../utils/auth");
@@ -7,7 +6,7 @@ const sharp = require("sharp");
 const crypto = require("crypto");
 const storage = multer.memoryStorage()
 const upload = multer();
-
+const User = require("../models/user");
 const emailRegexp = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const signup = (req, res, next) => {
@@ -39,6 +38,8 @@ const signup = (req, res, next) => {
                     name: name,
                     email: email,
                     password: password,
+                    isAdmin: false,
+                    isVerified: false,
                     bio: bio,
                     img: img,
                 }); bcrypt.genSalt(10, function (err, salt) {
@@ -81,9 +82,12 @@ const signin = (req, res) => {
             return res.status(404).json({
                 errors: [{ user: "not found" }],
             });
+        } else if (!user.isVerified) {
+            // User not verified
+            return res.status(403).json({ errors: [{ user: "Account awaiting verification." }] });
         } else {
             bcrypt.compare(password, user.password).then(isMatch => {
-                if (!isMatch) {
+                if (!isMatch || !user.isVerified) {
                     return res.status(400).json({
                         errors: [{
                             password:
@@ -93,7 +97,7 @@ const signin = (req, res) => {
                 } let access_token = createJWT(
                     user.email,
                     user._id,
-                    3600
+                    604800
                 );
                 jwt.verify(access_token, process.env.TOKEN_SECRET, (err,
                     decoded) => {

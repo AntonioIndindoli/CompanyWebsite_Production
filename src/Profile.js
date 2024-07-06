@@ -15,7 +15,7 @@ const cookies = new Cookies();
 
 
 export default function Profile() {
-    const currentUser = cookies.get("USER");
+    const currentUser = localStorage.getItem("USER");
     
     const { user } = useParams();
     //alert("sex");
@@ -31,7 +31,7 @@ export default function Profile() {
             axios.get(`${process.env.REACT_APP_API_URL}/users/${user}`)
             .then((res) => setUserData(res.data.user))
             .catch(console.error);
-    }, []);
+    }, [user]);
 
     const handleSubmitShow = (e) => {
         if (!currentUser) {
@@ -57,11 +57,14 @@ export default function Profile() {
             <React.Fragment>
                 <div className="group-feed">
                     <div className="group-box-post">
-                        <ProfilePic userParam={user} />
-                        <a className="Post-text-title">{user}</a >
-                        <p  className="edit-profile">Joined on: {dateFormat(createdAt, "mmmm dS, yyyy")}</p >
-                        <p  className="Post-text">{bio}</p >
-                        {currentUser == user && <EditUser />}
+                    <div className="post-header">
+                                <ProfilePic userParam={user} />
+                                <div className="post-title-date">
+                                    <a className="Post-text-title">{user}</a>
+                                    <span className="post-date">Joined on {dateFormat(createdAt, "mmmm dS, yyyy")}</span>
+                                </div>
+                            </div>
+                            {currentUser === user && <EditUser bio={bio[0]} />}
                     </div>
                 </div>
 
@@ -70,10 +73,13 @@ export default function Profile() {
                 {data.map((post) => (
                     <div className="group-feed">
                         <div className="group-box-feed-post">
-                            <ProfilePic userParam={post.name} />
-                            <a href={"/profile/" + post.name} className="Post-text-title">{post.name} - {dateFormat(post.date, "mmmm dS, yyyy")}</a >
+                        <div className="post-header">
+                                <div className="post-title-date">
+                                    <span className="post-date">@{post.name} on {dateFormat(post.date, "mmmm dS, yyyy")}</span>
+                                </div>
+                            </div>
                             <article className="Post-text" dangerouslySetInnerHTML={{ __html: DOMPurify.sanitize(post.body) }} />
-                            {post.imageName != "noImage" && <img className="Post-img" src={post.imageName} />}
+                            {post.image && <img className="Post-img" src={`${process.env.REACT_APP_API_URL}/images/${post.image}`} />}
                             <PostComment postId={post._id} />
                         </div>
                     </div>
@@ -89,15 +95,15 @@ export default function Profile() {
             <React.Fragment>
                 <div className="group-feed">
                     <div className="group-box-post">
-                        <ProfilePic userParam={user} />
-                        <a className="Post-text-title">{user}   
+                    <div className="post-header">
+                                <ProfilePic userParam={user} />
+                                <div className="post-title-date">
+                                    <a className="Post-text-title">{user}</a>
+                                    <span className="post-date">Joined on {dateFormat(createdAt, "mmmm dS, yyyy")}</span>
+                                </div>
+                            </div>
+                            {currentUser === user && <EditUser bio={bio[0]} />}
 
-                    {showWarning && <p className='text-warning'>You must be signed in to edit</p>}
-
-                    </a >
-                        <p  className="Post-text">Joined on: {dateFormat(createdAt, "mmmm dS, yyyy")}</p >
-                        <p  className="Post-text">{bio}</p >
-                        {currentUser == user && <EditUser />}
                     </div>
                 </div>
 
@@ -108,13 +114,3 @@ export default function Profile() {
     }
     return null;
 }
-
-/* 
-                        <Button
-                            className='show-more'
-                            variant="primary"
-                            onClick={(e) => handleSubmitShow(e)}
-                        >
-                            <SettingsIcon fontSize="large"></SettingsIcon>
-                              Edit</Button>
-*/
