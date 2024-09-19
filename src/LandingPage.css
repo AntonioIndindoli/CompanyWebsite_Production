@@ -73,17 +73,6 @@
   border: #ffffff00;
 }
 
-.nav-button-card {
-  color: black;
-  font-size: 15px;
-  font-weight: 700;
-  word-wrap: break-word;
-  border: #ffffff00;
-  background: #f1f1f100;
-  text-decoration: none;
-}
-
-
 .nav-button-black {
   color: rgb(255, 255, 255);
   font-size: 15px;
@@ -121,6 +110,7 @@
   text-align: center;
   margin-top: 10px; /* Adjust margin as needed */
   z-index: 1;
+  font-style: italic;
 }
 
 .Home-Message-SubtextAlbum {
@@ -454,5 +444,102 @@
     width: auto;
     height: auto;
     z-index: 1;
+  }
+}
+
+
+
+/* General Card Styling */
+.card-div {
+  display: flex;
+  flex-direction: column;
+  width: 300px; /* You can adjust based on your design */
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease-in-out;
+  margin: 20px;
+}
+
+.card-div:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Image Styling */
+.card-image {
+  width: 100%;
+  height: 180px; /* Adjust this to fit your design */
+  object-fit: cover;
+  border-bottom: 1px solid #ccc;
+}
+
+/* Content Wrapper */
+.card-content {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Caption Styling (Link/Button) */
+.nav-button-card {
+  background-color: #4a93e6;
+  border: none;
+  color: white;
+  padding: 10px 16px;
+  font-size: 16px;
+  text-align: center;
+  border-radius: 4px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.nav-button-card {
+  color: black;
+  font-size: 15px;
+  font-weight: 700;
+  word-wrap: break-word;
+  border: #ffffff00;
+  background: #f1f1f100;
+  text-decoration: none;
+}
+
+.nav-button-card:hover {
+  background-color: #5d99da;
+}
+
+.nav-button-card:focus {
+  outline: none;
+}
+
+/* External Link Specific Styling */
+.nav-button-card a {
+  color: white;
+  text-decoration: none;
+}
+
+/* Description Styling */
+.card-description {
+  margin-top: 12px;
+  color: #666;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .card-div {
+      width: 100%;
+  }
+
+  .card-content {
+      padding: 10px;
+  }
+
+  .card-description {
+      font-size: 12px;
   }
 }
