@@ -14,7 +14,6 @@ This website was built using the MERN stack (MongoDB, Express, React, Node.js) a
   - [Running the App in Production](#running-the-app-in-production)
 - [Project Structure](#project-structure)
 - [Deployment and Uptime Strategy](#deployment-and-uptime-strategy)
-- [License](#license)
 
 ## Features
 
