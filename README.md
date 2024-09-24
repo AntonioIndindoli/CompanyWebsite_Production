@@ -164,18 +164,7 @@ This section explains how to set up and run the website on a home server or a pr
         ```
 
 - **MongoDB Setup**: Ensure MongoDB is running either locally or in the cloud. You can configure your `.env` file with the correct `MONGO_URI`.
-
-The markdown file you've provided has a few formatting issues that might affect its presentation, especially in terms of proper markdown syntax for heading hierarchy and list indentation. Here are the identified issues and suggestions for correction:
-
-1. **Heading Consistency:**
-   - The section "Deployment and Uptime Strategy" appears to be a major section like "Project Structure" but lacks the proper heading format. It should be prefixed with `##` to maintain the hierarchy and visual consistency in the markdown document.
-
-2. **List Indentation:**
-   - The points under "Deployment and Uptime Strategy" should be formatted as a bulleted list to improve readability and maintain consistency with other list usages in the document. Each item should begin with a dash (`-`) and proper indentation.
-
-Here’s how you can revise the sections:
-
-```markdown
+- 
 ## Project Structure
 
 Here’s a brief overview of the project structure:
@@ -203,4 +192,3 @@ This project was designed for high uptime and reliability, with a focus on self-
 - **Caddy:** Acts as a reverse proxy to handle public traffic and SSL termination with automatic HTTPS via Let's Encrypt.
 
 - **OS-level scripts:** Additional OS scripts and services (such as Task Scheduler on Windows) ensure that PM2 and the server are restarted upon system boot.
-```
