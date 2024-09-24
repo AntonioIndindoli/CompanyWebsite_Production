@@ -1,4 +1,4 @@
-# Game Development Company Website
+# Game Development Hub
 
 This website was built using the MERN stack (MongoDB, Express, React, Node.js) and hosted on a self-configured home server, ensuring security, stability, and performance for public traffic.
 
