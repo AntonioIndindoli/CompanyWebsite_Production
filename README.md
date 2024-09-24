@@ -172,14 +172,13 @@ Here’s a brief overview of the project structure:
 
 ```bash
 .
-├── backend         # Contains the Express server and API logic
+├── Frontend         # Contains the Express server and API logic
 │   ├── models      # Mongoose models for MongoDB collections
 │   ├── routes      # API routes (e.g., for projects, blog posts)
 │   └── server.js   # Main entry point for the Express app
-├── frontend        # React frontend that interacts with the API
-│   ├── src         # React components and pages
-│   └── public      # Static assets (images, CSS, etc.)
-├── Caddyfile       # Caddy reverse proxy configuration file
+│   ├── Backend        # React frontend that interacts with the API
+│   │   ├── src         # React components and pages
+│   │   └── public      # Static assets (images, CSS, etc.)
 └── README.md       # Project documentation
 ```
 
