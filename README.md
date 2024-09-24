@@ -32,6 +32,8 @@ This project was built using the following technologies:
 - **Node.js**: Server-side JavaScript runtime for handling HTTP requests and serving the React frontend.
 - **PM2**: Process manager to ensure high uptime and monitor the Node.js application.
 - **Caddy**: Web server and reverse proxy for handling HTTPS and domain management.
+- **(Deprecated) Firebase**: Firebase was originally used to manage hosting, authentication, and some database functionalities. However, it's still part of the codebase because certain dependencies were not fully migrated yet, and removing it requires a more gradual deprecation. It remains included for legacy purposes, but it's no longer the main technology used for the app's infrastructure.
+- **(Deprecated) Google Cloud**: Previously, the website was hosted on Google Cloud using Firebase for deployment. Google Cloud provided the infrastructure for scalable hosting, and Firebase was used as the hosting platform to serve static assets and enable easy integration with the app. This setup has since been replaced by the current self-hosted strategy, but documentation and code references might still include Google Cloud-related configurations.
 
 ## Getting Started
 
