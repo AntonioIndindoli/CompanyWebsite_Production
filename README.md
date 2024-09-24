@@ -1,174 +1,175 @@
+# Game Development Company Website
+
 This website was built using the MERN stack (MongoDB, Express, React, Node.js) and hosted on a self-configured home server, ensuring security, stability, and performance for public traffic.
-Table of Contents
 
-    Features
-    Technologies
-    Getting Started
-        Prerequisites
-        Installation
-    Server Setup
-        Running the App Locally
-        Running the App in Production
-    Project Structure
-    Deployment and Uptime Strategy
-    License
+## Table of Contents
 
-Features
+- [Features](#features)
+- [Technologies](#technologies)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Server Setup](#server-setup)
+  - [Running the App Locally](#running-the-app-locally)
+  - [Running the App in Production](#running-the-app-in-production)
+- [Project Structure](#project-structure)
+- [Deployment and Uptime Strategy](#deployment-and-uptime-strategy)
+- [License](#license)
 
-    Showcasing Projects: Highlights various game development projects such as "The Backrooms: Unseen Tapes."
-    Blog Integration: A blog to engage the community, share updates on game development, and promote upcoming releases.
-    Role-playing Web Game: Interactive web game to drive user engagement.
-    Responsive Design: Optimized for various devices to ensure a seamless experience for all visitors.
+## Features
 
-Technologies
+- **Showcasing Projects**: Highlights various game development projects such as "The Backrooms: Unseen Tapes."
+- **Blog Integration**: A blog to engage the community, share updates on game development, and promote upcoming releases.
+- **Role-playing Web Game**: Interactive web game to drive user engagement.
+- **Responsive Design**: Optimized for various devices to ensure a seamless experience for all visitors.
+
+## Technologies
 
 This project was built using the following technologies:
 
-    MongoDB: For storing project data and blog posts.
-    Express.js: Backend framework for handling server-side logic and API routes.
-    React.js: Frontend framework for building dynamic user interfaces.
-    Node.js: Server-side JavaScript runtime for handling HTTP requests and serving the React frontend.
-    PM2: Process manager to ensure high uptime and monitor the Node.js application.
-    Caddy: Web server and reverse proxy for handling HTTPS and domain management.
+- **MongoDB**: For storing project data and blog posts.
+- **Express.js**: Backend framework for handling server-side logic and API routes.
+- **React.js**: Frontend framework for building dynamic user interfaces.
+- **Node.js**: Server-side JavaScript runtime for handling HTTP requests and serving the React frontend.
+- **PM2**: Process manager to ensure high uptime and monitor the Node.js application.
+- **Caddy**: Web server and reverse proxy for handling HTTPS and domain management.
 
-Getting Started
+## Getting Started
 
-These instructions will help you get the project up and running on your local machine for development and testing purposes. For production setup, see the Running the App in Production section.
-Prerequisites
+These instructions will help you get the project up and running on your local machine for development and testing purposes. For production setup, see the [Running the App in Production](#running-the-app-in-production) section.
+
+### Prerequisites
 
 Make sure you have the following software installed:
 
-    Node.js (v18 LTS recommended)
-    npm (Node Package Manager, comes with Node.js)
-    MongoDB (Set up locally or using a cloud service like MongoDB Atlas)
-    PM2 (For production deployment, instructions below)
-    Git (To clone the repository)
+- Node.js (v18 LTS recommended)
+- npm (Node Package Manager, comes with Node.js)
+- MongoDB (Set up locally or using a cloud service like MongoDB Atlas)
+- PM2 (For production deployment, instructions below)
+- Git (To clone the repository)
 
-Installation
+### Installation
 
-    Clone the repository:
+1. Clone the repository:
 
-    bash
+    ```bash
+    git clone https://github.com/yourusername/gamedev-company-website.git
+    cd gamedev-company-website
+    ```
 
-git clone https://github.com/yourusername/gamedev-company-website.git
-cd gamedev-company-website
+2. Install backend dependencies:
 
-Install backend dependencies:
+    ```bash
+    cd backend
+    npm install
+    ```
 
-bash
+3. Install frontend dependencies:
 
-cd backend
-npm install
+    ```bash
+    cd ../frontend
+    npm install
+    ```
 
-Install frontend dependencies:
+4. Set up environment variables:
 
-bash
+    Create a `.env` file in the `backend` directory with the following information:
 
-cd ../frontend
-npm install
-
-Set up environment variables:
-
-    Create a .env file in the backend directory with the following information:
-
-    bash
-
+    ```bash
     MONGO_URI=mongodb://localhost:27017/yourdbname
     PORT=5000
+    ```
 
-    Adjust the MONGO_URI according to your MongoDB setup.
+    Adjust the `MONGO_URI` according to your MongoDB setup.
 
-Start the development server:
+5. Start the development server:
 
-    Backend (Express server):
+    - Backend (Express server):
 
-    bash
+        ```bash
+        cd backend
+        npm run dev
+        ```
 
-cd backend
-npm run dev
+    - Frontend (React app):
 
-Frontend (React app):
-
-bash
-
+        ```bash
         cd ../frontend
         npm start
+        ```
 
-    The backend will run on http://localhost:5000 and the frontend on http://localhost:3000.
+    The backend will run on `http://localhost:5000` and the frontend on `http://localhost:3000`.
 
-Server Setup
+## Server Setup
 
 This section explains how to set up and run the website on a home server or a production environment. The production setup uses PM2 and Caddy to ensure constant uptime and HTTPS support.
-Running the App Locally
 
-    Backend:
-        In the backend directory, start the Express server:
+### Running the App Locally
 
-        bash
+- Backend: In the `backend` directory, start the Express server:
 
+    ```bash
     npm run dev
+    ```
 
     Make sure MongoDB is running on your local machine or configured to connect to a cloud instance.
 
-Frontend:
+- Frontend: In the `frontend` directory, start the React development server:
 
-    In the frontend directory, start the React development server:
+    ```bash
+    npm start
+    ```
 
-    bash
+### Running the App in Production
 
-        npm start
+- **PM2 Process Management**: PM2 ensures that your Node.js application stays online continuously, even in case of crashes or system reboots.
 
-Running the App in Production
+    1. Install PM2 globally:
 
-    PM2 Process Management: PM2 ensures that your Node.js application stays online continuously, even in case of crashes or system reboots.
+        ```bash
+        npm install pm2 -g
+        ```
 
-    Install PM2 globally:
+    2. Start the backend using PM2:
 
-    bash
+        ```bash
+        cd backend
+        pm2 start server.js --name "Mayuns-Site" --watch
+        ```
 
-npm install pm2 -g
+    3. Save the process list so it automatically restarts on reboot:
 
-Start the backend using PM2:
+        ```bash
+        pm2 save
+        ```
 
-bash
+    4. Set up PM2 to start on boot:
 
-cd backend
-pm2 start server.js --name "Mayuns-Site" --watch
+        On Windows, use the Task Scheduler to run PM2 with the `pm2 resurrect` command at startup (refer to the PM2 startup instructions in the [Deployment and Uptime Strategy](#deployment-and-uptime-strategy) section).
 
-Save the process list so it automatically restarts on reboot:
+- **Caddy Configuration**: Caddy serves as the reverse proxy and HTTPS handler for this application.
 
-bash
+    1. Create a `Caddyfile`:
 
-pm2 save
+        ```caddyfile
+        yourdomain.com {
+            reverse_proxy localhost:5000
+        }
+        ```
 
-Set up PM2 to start on boot:
+    2. Start Caddy:
 
-    On Windows, use the Task Scheduler to run PM2 with the pm2 resurrect command at startup (refer to the PM2 startup instructions in the Deployment and Uptime Strategy section).
-
-Caddy Configuration: Caddy serves as the reverse proxy and HTTPS handler for this application.
-
-    Create a Caddyfile:
-
-    caddyfile
-
-yourdomain.com {
-    reverse_proxy localhost:5000
-}
-
-Start Caddy:
-
-bash
-
+        ```bash
         caddy run --config Caddyfile
+        ```
 
-    MongoDB Setup: Ensure MongoDB is running either locally or in the cloud. You can configure your .env file with the correct MONGO_URI.
+- **MongoDB Setup**: Ensure MongoDB is running either locally or in the cloud. You can configure your `.env` file with the correct `MONGO_URI`.
 
-Project Structure
+## Project Structure
 
 Here’s a brief overview of the project structure:
 
-bash
-
+```bash
 .
 ├── backend         # Contains the Express server and API logic
 │   ├── models      # Mongoose models for MongoDB collections
